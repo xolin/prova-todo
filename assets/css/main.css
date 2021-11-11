@@ -1,0 +1,42 @@
+input {
+    width: 100%;
+    min-height: 40px;
+    border: none;
+    margin-bottom: 30px;
+}
+
+input:focus-visible {
+    border: white;
+}
+
+#input{
+    padding-left: 10px;
+}
+
+#errors {
+    background-color: yellowgreen;
+    
+}
+
+ul {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+    row-gap: 1px;
+}
+
+input, ul li {
+    min-height: 40px;
+    background-color: rgb(255, 255, 255);
+    list-style-type: none;    
+    
+    display: grid;
+    grid-template-columns: 1fr 10fr 1fr;
+}
+
+input, ul li p {
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: Arial, Helvetica, sans-serif;
+    text-transform: capitalize;
+}
