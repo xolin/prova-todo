@@ -6,19 +6,7 @@
         </div>
         <div ref="errors" id="errors" hidden>{{errors}}</div>
         <ul>
-            <TodoListItem :task="task" v-for="task in tasks"/>
-            <!-- <li v-for="task in tasks" :key="task.id" :data-id="task.id">
-                <div class="icon" v-on:click="toogleTaskState(task.id)">
-                    <img :src="!task.done ? '/icons/circle-solid.svg' : '/icons/circle-check-solid.svg'" />
-                </div>
-                <div>
-                    <p>{{ task.text }}</p>
-                </div>
-                <div class="icon" v-on:click="removeTask(task.id)">
-                    <img src="/icons/times-solid.svg" />
-                </div>
-            </li> -->
-
+            <TodoListItem :task="task" v-for="task in tasks" :key="task.id"/>
         </ul>
     </div>    
 </template>
@@ -65,7 +53,6 @@ export default Vue.extend({
                     const temptask: Task = JSON.parse(localStorage.getItem(localStorage.key(i)));
                     this.tasks.push(temptask);
                 }
-                console.log(localStorage);
             }
         },
         addTask: function (event: Event) {
@@ -77,7 +64,6 @@ export default Vue.extend({
                 const task: Task = { id: idTask, text: event.target.value, done: false };
                 if (process.client) {
                     localStorage.setItem(idTask, JSON.stringify(task));
-                    //localStorage.clear();
                 }
                 this.updateList();
                 event.target.value = "";
