@@ -1,9 +1,9 @@
 <template>
     <div id="list-root">
         <h2>TO DO</h2>
+        <input type="text" v-on:change="event => addTask(event)" />
+        <div ref="errors" id="errors" hidden>{{errors}}</div>
         <ul>
-            <input type="text" v-on:change="event => addTask(event)" />
-            <div ref="errors" id="errors" hidden>{{errors}}</div>
             <li v-for="task in tasks" :key="task.id" :data-id="task.id">
                 <div class="icon" v-on:click="toogleTaskState(task.id)">
                     <img :src="!task.done ? '/icons/circle-solid.svg' : '/icons/circle-check-solid.svg'" />
