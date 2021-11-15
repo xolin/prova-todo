@@ -54,11 +54,11 @@ input:focus, input:focus-visible {
 }
 
 input:hover, .icon:hover {
-    background-color: rgb(207, 206, 206);
+    background-color: rgb(240, 238, 238);
 }
 
 input:active, .icon:active {
-    background-color: rgb(172, 172, 172);
+    background-color: rgb(225, 221, 221);
 }
 .fa-trash-can {
     color: rgb(184, 223, 46);
