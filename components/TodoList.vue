@@ -1,10 +1,10 @@
 <template>
     <div id="list-root">
         <h2>TO DO</h2>
-        <div id="input">
-            <input type="text" v-on:change="event => addTask(event)" />
-        </div>
         <div ref="errors" id="errors" hidden>{{errors}}</div>
+        <div id="input">
+            <input type="text" v-on:change="event => addTask(event)" placeholder="Write a new task to do" />
+        </div>
         <ul>
             <TodoListItem :task="task" v-for="task in tasks" :key="task.id"/>
         </ul>
@@ -39,9 +39,11 @@ export default Vue.extend({
     },
     created: function() {
         this.$root.$on('update-list', this.updateList)
+        this.$root.$on('validate-text', this.validateTextTask)
     },
     beforeDestroy: function () {
         this.$root.$off('update-list', this.updateList)
+        this.$root.$off('validate-text', this.validateTextTask)
     },
     mounted() {
         this.getTasks();
@@ -53,15 +55,16 @@ export default Vue.extend({
                     const temptask: Task = JSON.parse(localStorage.getItem(localStorage.key(i)));
                     this.tasks.push(temptask);
                 }
+                this.tasks =  this._.orderBy(this.tasks, 'id')
             }
         },
         addTask: function (event: Event) {
-            const text: String = event.target.value;
+            let text: String = event.target.value;
             try {
-                this.checkUniqueTask(text);
-                this.checkEmpty(text);
-                const idTask: String = this.tasks.length + "-" + new Date().valueOf();
-                const task: Task = { id: idTask, text: event.target.value, done: false };
+                text = text.trim();
+                this.validateTextTask(text)
+                const idTask: String = new Date().valueOf();
+                const task: Task = { id: idTask, text: text, done: false };
                 if (process.client) {
                     localStorage.setItem(idTask, JSON.stringify(task));
                 }
@@ -70,25 +73,26 @@ export default Vue.extend({
             }
             catch (e) {
                 if (e instanceof taskAlreadyExistsException) {
-                }
-                else if (e instanceof taskEmptyTextException) {
-                }
-                else if (e) {
+                }else if (e instanceof taskEmptyTextException) {
+                }else if (e) {
                     console.log(e);
                 }
             }
         },
-        checkUniqueTask(val: String) {
+        validateTextTask(text: String){
+            this.checkUniqueTask(text);
+            this.checkEmpty(text);
+        },
+        checkUniqueTask(text: String) {
             this.tasks.forEach(element => {
-                if (Object.values(element).indexOf(val) > -1) {
+                if (Object.values(element).indexOf(text) > -1) {
                     this.showError("This task already exists!");
                     throw new Error("taskAlreadyExistsException");
                 }
             });
         },
-        checkEmpty(val: String) {
-            val = val.trim();
-            if (val.length == 0 || val == " ") {
+        checkEmpty(text: String) {
+            if (text.length == 0 || text == " ") {
                 this.showError("Some text must be entered!");
                 throw new Error("taskEmptyTextException");
             }
@@ -107,13 +111,19 @@ export default Vue.extend({
             }, 1500);
         }
     },
+    computed: {
+        orderedList: function() {
+            return this._.orderBy(this.tasks, 'id')
+        }
+    },
     components: { TodoListItem }
 })
 </script>
 
 <style scoped>
 #list-root {
-    background-color: rgb(80, 144, 183);
+    flex-basis: 50%;
+    background-color: rgb(242,244,245);
     padding: 20px;
 }
 

@@ -1,3 +1,6 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
 input {
     width: 100%;
     min-height: 40px;
@@ -5,12 +8,14 @@ input {
     margin-bottom: 30px;
 }
 
+
 input:focus-visible {
     border: white;
 }
 
 #input{
     padding-left: 10px;
+    padding-right: 10px;
 }
 
 #errors {
@@ -22,7 +27,7 @@ ul {
     display: flex;
     flex-direction: column;
     padding-left: 10px;
-    row-gap: 1px;
+    row-gap: 6px;
 }
 
 input, ul li {
@@ -31,12 +36,30 @@ input, ul li {
     list-style-type: none;    
     
     display: grid;
-    grid-template-columns: 1fr 10fr 1fr;
+    grid-template-columns: 1fr 9fr 1fr;
 }
 
-input, ul li p {
+input {
     font-size: 1rem;
     font-weight: 600;
-    font-family: Arial, Helvetica, sans-serif;
-    text-transform: capitalize;
+    text-transform: lowercase;
+    padding-left: 10px;
+}
+input:first-letter {
+    text-transform: uppercase;
+}
+
+input:focus, input:focus-visible {
+    outline: none;
+}
+
+input:hover, .icon:hover {
+    background-color: rgb(207, 206, 206);
+}
+
+input:active, .icon:active {
+    background-color: rgb(172, 172, 172);
+}
+.fa-trash-can {
+    color: rgb(184, 223, 46);
 }
