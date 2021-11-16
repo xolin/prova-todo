@@ -3,9 +3,9 @@
         <h2>TO DO</h2>
         <div ref="errors" id="errors" hidden>{{errors}}</div>
         <div id="input">
-            <input type="text" v-on:change="event => addTask(event)" placeholder="Write a new task to do" />
+            <input type="text" @change="event => addTask(event)" placeholder="Write a new task to do" />
         </div>
-        <ul>
+        <ul class="list">
             <TodoListItem :task="task" v-for="task in tasks" :key="task.id"/>
         </ul>
     </div>    
