@@ -3,14 +3,6 @@ import TodoListItem from '@/components/TodoListItem.vue'
 import sinon from 'sinon'
 
 describe('TodoListItem', () => {
-  // test('is a Vue instance', () => {
-  //   const wrapper = mount(TodoList)
-  //   expect(wrapper.vm).toBeTruthy()
-  // }),
-  // test('text is correct', () => {
-  //   const wrapper = mount(TodoList)
-  //   expect(wrapper.find('h2').text()).toContain('TO DO')
-  // }),
 
   test('removeTask method', async () => {
     const clickHandler = sinon.stub()
