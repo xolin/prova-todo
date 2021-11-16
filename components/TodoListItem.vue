@@ -6,15 +6,14 @@
         <div>
             <input :value="task.text" v-on:change="event => editTask(task.id, event)" :class="task.done ?'task-done':''"/>
         </div>
-        <div class="icon remove" v-on:click="removeTask(task.id)">
+        <button class="icon remove" v-on:click="removeTask(task.id)">
             <div>
-
                 <img src="/icons/trash-can-solid.svg" class="remove-icon" />
             </div>
             <div>
                 <p>Delete</p>
             </div>
-        </div>
+        </button>
     </li>   
 </template>
 
@@ -27,6 +26,8 @@ declare interface Task {
     done: Boolean
 }
 
+function taskAlreadyExistsException() {}
+function taskEmptyTextException() {}
 
 export default Vue.extend({
     props: {
@@ -101,6 +102,7 @@ input {
     color: white;
     font-size: 11px;
     font-weight: 600;
+    border: 0;
 }
 .remove:hover {
     opacity: 0.9;
