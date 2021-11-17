@@ -1,7 +1,11 @@
 <template>
     <div id="list-root">
         <h2>TO DO</h2>
-        <div ref="errors" id="errors" hidden>{{errors}}</div>
+        <div ref="errors" id="errors" hidden>
+            <div v-for="error in errors" :key="error">
+                🚫 {{ error.message }}
+            </div>
+        </div>
         <div id="input">
             <input type="text" @change="event => addTask(event)" placeholder="Write a new task to do" />
         </div>
