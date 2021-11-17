@@ -1,8 +1,8 @@
 <template>
     <li :data-id="task.id">
-        <div class="icon" v-on:click="toogleTaskState(task.id)">
+        <button class="icon toggle" @click="toggleTaskState(task.id)">
             <img class="state-icon" :class="task.done ? 'icon-done' : 'icon-undone'" :src="!task.done ? '/icons/circle-solid.svg' : '/icons/circle-check-solid.svg'" />
-        </div>
+        </button>
         <div>
             <input :value="task.text" v-on:change="event => editTask(task.id, event)" :class="task.done ?'task-done':''"/>
         </div>
@@ -60,7 +60,7 @@ export default Vue.extend({
                 }
             }
         },
-        toogleTaskState(id) {
+        toggleTaskState(id) {
             if (process.client) {
                 const task: Task = JSON.parse(localStorage.getItem(id));
                 task.done = !task.done;
@@ -96,18 +96,26 @@ input {
     filter: invert(55%) sepia(14%) saturate(23) hue-rotate(-45deg) brightness(119%) contrast(86%);
 }
 
+.toggle {
+    background-color: #fff;
+    border: none;
+}
+
 .remove {
-    justify-content: space-evenly;
+    justify-content: center;
     background-color: rgb(255, 92, 92);
     color: white;
     font-size: 11px;
     font-weight: 600;
     border: 0;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 .remove:hover {
     opacity: 0.9;
 }
 .remove-icon {
+    padding: 5px;
     width: 11px;
     height: 11px;
     filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(189deg) brightness(103%) contrast(101%);
