@@ -7,7 +7,7 @@
             </div>
         </div>
         <div id="input">
-            <input type="text" @change="event => addTask(event)" placeholder="Write a new task to do" />
+            <input type="text" @change="event => addTask(event)" placeholder="Write here a new task to do" />
         </div>
         <ul class="list" v-if="tasks.length">
             <TodoListItem :task="task" v-for="task in tasks" :key="task.id"/>
@@ -57,12 +57,12 @@ export default Vue.extend({
     },
     methods: {
         getTasks() {
-            if (process.client) {
+            if (process.client || process.env.TEST) {
                 for (let i = 0; i < localStorage.length; i++) {
                     const temptask: Task = JSON.parse(localStorage.getItem(localStorage.key(i)));
                     this.tasks.push(temptask);
                 }
-                this.tasks =  this._.orderBy(this.tasks, 'id')
+                if(!process.env.TEST) this.tasks =  this._.orderBy(this.tasks, 'id')
             }
         },
         addTask: function (event: Event) {
@@ -76,7 +76,6 @@ export default Vue.extend({
                     localStorage.setItem(idTask, JSON.stringify(task));
                 }
                 this.updateList();
-                event.target.value = "";
             }
             catch (e) {
                 if (e instanceof taskAlreadyExistsException) {
@@ -85,6 +84,7 @@ export default Vue.extend({
                     console.log(e);
                 }
             }
+            event.target.value = "";
         },
         validateTextTask(text: String){
             this.checkUniqueTask(text);
@@ -116,11 +116,6 @@ export default Vue.extend({
                 this.$refs.errors.hidden = true;
                 this.errors.pop();
             }, 1500);
-        }
-    },
-    computed: {
-        orderedList: function() {
-            return this._.orderBy(this.tasks, 'id')
         }
     },
     components: { TodoListItem }
