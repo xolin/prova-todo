@@ -1,24 +1,42 @@
 import { mount } from '@vue/test-utils'
 import TodoListItem from '@/components/TodoListItem.vue'
 import sinon from 'sinon'
+import Vue from 'vue'
 
 describe('TodoListItem', () => {
-
   test('removeTask method', async () => {
-    const clickHandler = sinon.stub()
-    const taskTemp = { id: 1636998691369, text: "ssadasd", done: false }
+    const onClick = jest.fn()
+    const taskTemp = { id: 1636998691369, text: "Wash dishes", done: false }
     const wrapper = mount(TodoListItem, {
       propsData: {
         task: taskTemp,
-        clickHandler,
+        click: onClick
       },
     })
-    const remove = wrapper.find(".remove")
-    await remove.trigger("click")
+    wrapper.find(".remove").trigger('click', {button: 0})
+    await wrapper.vm.$emit("update-list")
+    await Vue.nextTick();
+    expect(onClick).toHaveBeenCalled()
+    expect(wrapper.emitted('update-list')).toBeTruthy()
+    expect(wrapper.props().task).toEqual(undefined)
+  }),
+  test('toggleTaskState method', async () => {
+    const onClick = jest.fn()
+    const taskTemp = { id: 1636998691369, text: "Call doctor", done: false }
+    const wrapper = mount(TodoListItem, {
+      propsData: {
+        task: taskTemp,
+        click: onClick
+      },
+    })
+    
+    await wrapper.find("button.toggle").trigger("click")
+    await Vue.nextTick();
+    expect(onClick).toHaveBeenCalled()
     wrapper.vm.$emit("update-list")
 
-    //I got stuck here because I can't broadcast an event using jest. I don't know what's wrong, I can't find much information online
-    //expect(clickHandler.called).toBe(true)
+    expect(wrapper.emitted('update-list')).toBeTruthy()
+    expect(wrapper.props().task.done).toEqual(true)
   })
 
 })

@@ -1,12 +1,12 @@
 <template>
     <li :data-id="task.id">
-        <button class="icon toggle" @click="toggleTaskState(task.id)">
+        <button class="icon toggle" @click="event =>toggleTaskState(task.id)">
             <img class="state-icon" :class="task.done ? 'icon-done' : 'icon-undone'" :src="!task.done ? '/icons/circle-solid.svg' : '/icons/circle-check-solid.svg'" />
         </button>
         <div>
             <input :value="task.text" v-on:change="event => editTask(task.id, event)" :class="task.done ?'task-done':''"/>
         </div>
-        <button class="icon remove" v-on:click="removeTask(task.id)">
+        <button class="icon remove" @click="event => removeTask(task.id)">
             <div>
                 <img src="/icons/trash-can-solid.svg" class="remove-icon" />
             </div>
@@ -38,7 +38,7 @@ export default Vue.extend({
     },
     methods: {
         removeTask: function (id) {
-            if (process.client) {
+            if (process.client || process.env.TEST) {
                 localStorage.removeItem(id);
                 this.$root.$emit("update-list")
             }
