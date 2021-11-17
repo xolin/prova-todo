@@ -9,9 +9,12 @@
         <div id="input">
             <input type="text" @change="event => addTask(event)" placeholder="Write a new task to do" />
         </div>
-        <ul class="list">
+        <ul class="list" v-if="tasks.length">
             <TodoListItem :task="task" v-for="task in tasks" :key="task.id"/>
         </ul>
+        <div v-else>
+            <p class="empty-tasks">You don't you have any task? I don't think so ...</p>
+        </div>
     </div>    
 </template>
 
