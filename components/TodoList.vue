@@ -111,7 +111,7 @@ export default Vue.extend({
         showError(message: String) {
             this.errors = [];
             this.$refs.errors.hidden = false;
-            this.errors.push(message);
+            this.errors.push({message: message});
             setTimeout(() => {
                 this.$refs.errors.hidden = true;
                 this.errors.pop();
@@ -128,11 +128,19 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+h2 {
+    padding-left: 10px;
+}
+
 #list-root {
     flex-basis: 50%;
     background-color: rgb(242,244,245);
     padding: 20px;
 }
 
+.empty-tasks {
+    text-align: center;
+    font-size: 1.2rem;
+}
 
 </style>
