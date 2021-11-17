@@ -1,29 +1,40 @@
 import { mount } from '@vue/test-utils'
 import TodoList from '@/components/TodoList.vue'
-import sinon from 'sinon'
+import TodoListItem from "@/components/TodoListItem.vue"
 
 describe('TodoList', () => {
   test('is a Vue instance', () => {
     const wrapper = mount(TodoList)
     expect(wrapper.vm).toBeTruthy()
   }),
-  test('text is correct', () => {
+  test('Todo list initiated', () => {
     const wrapper = mount(TodoList)
     expect(wrapper.find('h2').text()).toContain('TO DO')
   }),
+  test("TodoListItem rendered", async () => {
+    const wrapper = mount(TodoList);
+    const task = {
+      id: new Date().valueOf(),
+      text: "Demo task",
+      done: false,
+    };
+    await wrapper.setData({
+      tasks: [task],
+    });
+
+    expect(wrapper.findComponent(TodoListItem).exists()).toBe(true);
+  }),
   test('addTask method', async () => {
-    const clickHandler = sinon.stub()
-    const newValue = 'test'
-    const wrapper = mount(TodoList, {
-      propsData: { clickHandler }
-    })
-    const input = wrapper.find('input')
-    input.element.value = newValue
-    await input.trigger('click')
-    
-    expect(wrapper.find('.list').exists()).toBe(true);
-    // Disabled because i can't find the way to emit the input text field
-    // expect(clickHandler.called).toBe(true)
-    // expect(wrapper.vm.$data.tasks[0]).toEqual(newValue)
+    const idTask = 1636998691369
+    const newTask = { id: idTask, text: "Pay the rent", done: true }
+    const wrapper = mount(TodoList)
+    const setItem = jest.spyOn(window.localStorage.__proto__, 'setItem');
+    localStorage.setItem(idTask, JSON.stringify(newTask));
+    wrapper.vm.updateList()
+
+    expect(setItem).toHaveBeenCalled()
+    expect(wrapper.emitted()).toBeTruthy()    
+    expect(wrapper.vm.$data.tasks[0]).toEqual(newTask)
+    localStorage.removeItem(idTask)
   })
 })
